@@ -4,8 +4,8 @@ Model contains:
 - data analysis
 - clear data
 - split data
-- build model
-- test model
+- build model [TODO]
+- test model [TODO]
 
 ### Requirements
 
@@ -13,7 +13,3 @@ Model contains:
 - matplotlib 3.4.0
 - numpy 1.26.3
 - folium 0.16.0
-
-
-
-id	city	type	squareMeters	rooms	floor	floorCount	buildYear	latitude	longitude	...	ownership	buildingMaterial	condition	hasParkingSpace	hasBalcony	hasElevator	hasSecurity	hasStorageRoom	price
