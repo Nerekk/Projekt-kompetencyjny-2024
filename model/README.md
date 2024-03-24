@@ -1,7 +1,7 @@
 ## Forecast Polish Apartments Model
 
 Model contains:
-- data analize
+- data analysis
 - clear data
 - split data
 - build model
