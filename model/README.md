@@ -13,3 +13,4 @@ Model contains:
 - matplotlib 3.4.0
 - numpy 1.26.3
 - folium 0.16.0
+- seaborn 0.13.2
