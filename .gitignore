@@ -4,3 +4,4 @@ model/.ipynb_checkpoints
 *.csv
 data/*.csv
 model/data/*.csv
+model/*.pmml
