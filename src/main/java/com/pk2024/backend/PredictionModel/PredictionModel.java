@@ -1,4 +1,4 @@
-package com.pk2024.backend.Utils;
+package com.pk2024.backend.PredictionModel;
 
 import org.pmml4s.model.Model;
 
@@ -7,18 +7,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PredictionModel {
-    private final Model model;
-    private Map<String, Double> parameters;
+    protected final Model model;
+    protected Map<String, Double> parameters;
 
     public PredictionModel(String filename) {
         this.model = Model.fromFile(filename);
         parameters = new HashMap<>();
+        initCities();
     }
 
-    private void prepareParameters() {
-        parameters.put("longitude", 0d);
-        parameters.put("squareMeters", 0d);
-        parameters.put("latitude", 0d);
+    protected void initCities() {
         parameters.put("wroclaw", 0d);
         parameters.put("poznan", 0d);
         parameters.put("gdansk", 0d);
@@ -36,27 +34,28 @@ public class PredictionModel {
         parameters.put("bialystok", 0d);
     }
 
-    // TODO walidacja danych
-    public void setParameters(Double meters, Double longitude, Double latitude, String city) {
-        parameters.put("squareMeters", meters);
-        parameters.put("longitude", longitude);
-        parameters.put("latitude", latitude);
-        parameters.put(city, 1d);
+    protected void resetParameters() {
+        for (String key : parameters.keySet()) {
+            parameters.put(key, 0d);
+        }
+    }
+    protected void putParameter(String parameter, Double value) {
+        parameters.put(parameter, value);
     }
 
-    public Double predict() {
-        Double price = getValue(parameters);
-        prepareParameters();
-        return price;
-    }
-
-    private Double getValue(Map<String, Double> values) {
+    protected Double getValue(Map<String, Double> values) {
         Object[] valuesMap = Arrays.stream(model.inputNames())
                 .map(values::get)
                 .toArray();
 
         Object[] result = model.predict(valuesMap);
         return (Double) result[0];
+    }
+
+    public Double predict() {
+        Double price = getValue(parameters);
+        resetParameters();
+        return price;
     }
 
 }

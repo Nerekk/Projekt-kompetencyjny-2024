@@ -1,5 +1,6 @@
 package com.pk2024.backend;
 
+import com.pk2024.backend.DTO.MediumModelDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,17 @@ public class ModelController {
                                                     @PathVariable("longitude") Double longitude,
                                                     @PathVariable("latitude") Double latitude,
                                                     @PathVariable("city") String city) {
-        return modelService.getPredictedValue(meters, longitude, latitude, city);
+        return modelService.getPredictedValueSmall(meters, longitude, latitude, city);
+    }
+
+    @GetMapping(path = "/{meters}/{longitude}/{latitude}/{city}/{centreDistance}/{floorCount}/{rooms}")
+    public ResponseEntity<Integer> getPredictedValue(@PathVariable("meters") Double meters,
+                                                     @PathVariable("longitude") Double longitude,
+                                                     @PathVariable("latitude") Double latitude,
+                                                     @PathVariable("city") String city,
+                                                     @PathVariable("centreDistance") Double centreDistance,
+                                                     @PathVariable("floorCount") Integer floorCount,
+                                                     @PathVariable("rooms") Integer rooms) {
+        return modelService.getPredictedValueMedium(new MediumModelDTO(city, meters, longitude, latitude, centreDistance, floorCount, rooms));
     }
 }
