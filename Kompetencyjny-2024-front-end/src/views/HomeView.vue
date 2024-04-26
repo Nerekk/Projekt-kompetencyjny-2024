@@ -1,9 +1,13 @@
 <template>
-  <v-main>
-    <router-view />
-  </v-main>
+  <div>
+    
+  </div>
 </template>
 
 <script setup>
-  //
+
 </script>
+
+<style>
+
+</style>
