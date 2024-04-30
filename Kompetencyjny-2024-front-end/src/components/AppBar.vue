@@ -1,6 +1,6 @@
 <template>
-  <v-toolbar class="bg-dark" :elevation="8" app extension-height="45" extended>
-    <v-toolbar-title class="font-weight-bold">Nazwa Aplikacji</v-toolbar-title>
+  <v-app-bar class="bg-dark" :elevation="8" fixed app extension-height="45" extended>
+    <v-app-bar-title class="font-weight-bold">Nazwa Aplikacji</v-app-bar-title>
     <v-spacer></v-spacer>
     <v-btn-group class="pr-6 gr-12">
       <v-btn v-for="(button, index) in topButtons" :key="button.id" variant="text" class="text-white">
@@ -19,7 +19,7 @@
       </div>
 
     </template>
-  </v-toolbar>
+  </v-app-bar>
 </template>
 <script>
 import { ref } from "vue";

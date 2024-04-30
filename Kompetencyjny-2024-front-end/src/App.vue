@@ -1,8 +1,12 @@
 <template>
-  <v-app>
-  <AppBar />
-  <router-view />
-</v-app>
+  <v-layout>
+    <AppBar />
+    <v-main>
+      <router-view />
+    </v-main>
+  </v-layout>
+
+
 </template>
 
 <script>
@@ -17,6 +21,11 @@ export default {
 
 <style>
 .v-btn {
-    text-transform: unset !important;
+  text-transform: unset !important;
 }
+
+* {
+  font-family: poppins;
+}
+
 </style>
