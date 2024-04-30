@@ -20,7 +20,8 @@ export default createVuetify({
           dark: '#2D2415',
           light: '#FFFEED',
           lightGray: '#A2A39A',
-          darkGray: '#606968'
+          darkGray: '#606968',
+          gold: '#B78B63'
         },
         
       },

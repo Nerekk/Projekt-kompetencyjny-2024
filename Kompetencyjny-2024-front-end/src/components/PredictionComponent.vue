@@ -42,7 +42,29 @@
             </v-col>
         </v-row>
         <div class="text-h4 text-center py-2">Najczęściej wybierane parametry</div>
-        <div class="text-center"><v-btn>Rozpocznij analizę</v-btn></div>
+        <div class="d-flex justify-space-between text-center">
+            <v-row>
+                <v-col>
+                    <v-progress-circular :model-value="60" :rotate="320" :size="85" :width="15" color="gold">
+                        <template v-slot:default> 60 % </template>
+                    </v-progress-circular>
+                    <div class="caption">Uproszczony</div>
+                </v-col>
+                <v-col>
+                    <v-progress-circular :model-value="60" :rotate="360" :size="85" :width="15" color="gold">
+                        <template v-slot:default> 60 % </template>
+                    </v-progress-circular>
+                    <div class="caption">60 m2</div>
+                </v-col>
+                <v-col>
+                    <v-progress-circular :model-value="60" :rotate="180" :size="85" :width="15" color="gold">
+                        <template v-slot:default> 60 % </template>
+                    </v-progress-circular>
+                    <div class="caption">Warszawa</div>
+                </v-col>
+            </v-row>
+        </div>
+        <div class="mt-8 analysis-line text-center"><v-btn class="mt-n6">Rozpocznij analizę</v-btn></div>
     </v-container>
 </template>
 
@@ -62,10 +84,10 @@ export default {
             }).addTo(map.value);
         });
         const items = ref([
-            { title: 'Click Me' },
-            { title: 'Click Me' },
-            { title: 'Click Me' },
-            { title: 'Click Me 2' },
+            { title: 'Łódź' },
+            { title: 'Warszawa' },
+            { title: 'Gdańsk' },
+            { title: 'Poznań' },
         ]);
         const selected = ref("Miasto");
         return {
@@ -87,5 +109,12 @@ export default {
     font-size: 12px;
     color: gray;
     margin-top: 4px;
+}
+.analysis-line {
+  width: 100vw; /* Długość linii */
+  height: 2px; /* Grubość linii */
+  background-color: black; /* Czarny kolor */
+  left: 0; /* Umieszczenie na lewej krawędzi ekranu */
+  position: absolute;
 }
 </style>
