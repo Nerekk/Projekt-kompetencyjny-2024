@@ -1,6 +1,6 @@
-package com.pk2024.backend.PredictionModel;
+package com.pk2024.backend.prediction_model;
 
-public class PredictionModelSmall extends PredictionModel{
+public class PredictionModelSmall extends PredictionModel {
 
     public PredictionModelSmall(String filename) {
         super(filename);

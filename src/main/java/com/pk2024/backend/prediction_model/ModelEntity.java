@@ -1,4 +1,4 @@
-package com.pk2024.backend;
+package com.pk2024.backend.prediction_model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

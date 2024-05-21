@@ -1,8 +1,8 @@
-package com.pk2024.backend.PredictionModel;
+package com.pk2024.backend.prediction_model;
 
 import com.pk2024.backend.DTO.MediumModelDTO;
 
-public class PredictionModelMedium extends PredictionModel{
+public class PredictionModelMedium extends PredictionModel {
 
     public PredictionModelMedium(String filename) {
         super(filename);

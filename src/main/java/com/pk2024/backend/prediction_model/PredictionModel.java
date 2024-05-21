@@ -1,4 +1,4 @@
-package com.pk2024.backend.PredictionModel;
+package com.pk2024.backend.prediction_model;
 
 import org.pmml4s.model.Model;
 
@@ -39,6 +39,7 @@ public class PredictionModel {
             parameters.put(key, 0d);
         }
     }
+
     protected void putParameter(String parameter, Double value) {
         parameters.put(parameter, value);
     }

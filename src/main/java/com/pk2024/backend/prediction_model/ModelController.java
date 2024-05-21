@@ -1,4 +1,4 @@
-package com.pk2024.backend;
+package com.pk2024.backend.prediction_model;
 
 import com.pk2024.backend.DTO.MediumModelDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.pk2024.backend.settings.Settings.MODEL_MAPPING;
+
 @RestController
-@RequestMapping(path = "model")
+@RequestMapping(path = MODEL_MAPPING)
 public class ModelController {
     private final ModelService modelService;
 

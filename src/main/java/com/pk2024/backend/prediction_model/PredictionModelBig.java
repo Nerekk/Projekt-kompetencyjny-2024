@@ -1,8 +1,8 @@
-package com.pk2024.backend.PredictionModel;
+package com.pk2024.backend.prediction_model;
 
 import com.pk2024.backend.DTO.BigModelDTO;
 
-public class PredictionModelBig extends PredictionModel{
+public class PredictionModelBig extends PredictionModel {
 
     public PredictionModelBig(String filename) {
         super(filename);

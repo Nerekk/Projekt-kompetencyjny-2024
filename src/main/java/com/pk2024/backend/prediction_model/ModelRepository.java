@@ -1,4 +1,4 @@
-package com.pk2024.backend;
+package com.pk2024.backend.prediction_model;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
