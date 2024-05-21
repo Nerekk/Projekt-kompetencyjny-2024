@@ -4,6 +4,10 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+!**/src/main/resources/reg_rf_4f.pmml
+!**/src/main/resources/reg_rf_7f.pmml
+!**/src/main/resources/reg_rf_14f.pmml
+
 ### STS ###
 .apt_generated
 .classpath
