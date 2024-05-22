@@ -84,6 +84,7 @@ public class AuthenticationService {
                 .expired(false)
                 .revoked(false)
                 .build();
+
         tokenRepository.save(token);
     }
 
