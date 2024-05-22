@@ -1,4 +1,5 @@
 <template>
+  <v-main>
   <div class="bg" ref="bgRef">
     <!-- <v-img src="@/assets/background.png" ></v-img> -->
     <div class="text-h3 text-white text-center pt-2">Kupuj, planuj, inwestuj...</div>
@@ -7,6 +8,7 @@
   <div class="prediction-section" ref="predictionSection">
     <PredictionComponent />
   </div>
+  </v-main>
 </template>
 
 <script>
