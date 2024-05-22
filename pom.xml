@@ -9,8 +9,8 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.pk2024</groupId>
-	<artifactId>Projekt-kompetencyjny-2024</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>backend-app</artifactId>
+	<version>0.0.1</version>
 	<name>back-end</name>
 	<description>Back end project for Spring Boot</description>
 	<properties>
@@ -97,15 +97,22 @@
 			<version>1.0.1</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
+
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+
 	</build>
+
 
 </project>
