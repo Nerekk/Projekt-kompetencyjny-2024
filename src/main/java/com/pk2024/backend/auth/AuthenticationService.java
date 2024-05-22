@@ -5,6 +5,7 @@ import com.pk2024.backend.config.JwtService;
 import com.pk2024.backend.token.Token;
 import com.pk2024.backend.token.TokenRepository;
 import com.pk2024.backend.token.TokenType;
+import com.pk2024.backend.user.Role;
 import com.pk2024.backend.user.User;
 import com.pk2024.backend.user.UserDTO;
 import com.pk2024.backend.user.UserRepository;
@@ -35,7 +36,7 @@ public class AuthenticationService {
                 .lastname(request.getLastname())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(request.getRole())
+                .role(Role.USER)
                 .build();
 
         User savedUser = repository.save(user);
