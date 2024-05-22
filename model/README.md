@@ -17,3 +17,4 @@ Model contains:
 - seaborn 0.13.2
 - sklearn2pmml 0.105.2
 - scikit-lear 1.3.2
+- sklearn_pandas 23.3.1 

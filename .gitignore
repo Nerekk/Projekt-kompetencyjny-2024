@@ -1,7 +1,4 @@
 .ipynb_checkpoints
 data/.ipynb_checkpoints
 model/.ipynb_checkpoints
-*.csv
-data/*.csv
-model/data/*.csv
 model/*.pmml
