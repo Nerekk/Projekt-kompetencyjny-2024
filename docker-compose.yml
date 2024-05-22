@@ -1,0 +1,40 @@
+version: '1.0'
+
+name: competence_project
+
+services:
+
+  backend:
+    container_name: spring-boot-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    environment:
+      - SPRING_SECRET_KEY=404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://aws-0-eu-central-1.pooler.supabase.com:5432/competence_project
+      - SPRING_DATASOURCE_USERNAME=postgres.jnvjqszxefanfqyhvosv
+      - SPRING_DATASOURCE_PASSWORD=d1Nc9FpflbRZhoEF74gk
+    networks:
+      - springboot-network
+
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4-container
+    restart: always
+    ports:
+      - "8000:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: test@mail.com
+      PGADMIN_DEFAULT_PASSWORD: strongpassword
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+
+volumes:
+  pgadmin-data:
+
+networks:
+  springboot-network:
+    driver: bridge
