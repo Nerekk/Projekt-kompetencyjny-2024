@@ -6,11 +6,13 @@ import com.pk2024.backend.token.Token;
 import com.pk2024.backend.token.TokenRepository;
 import com.pk2024.backend.token.TokenType;
 import com.pk2024.backend.user.User;
+import com.pk2024.backend.user.UserDTO;
 import com.pk2024.backend.user.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -122,5 +124,34 @@ public class AuthenticationService {
                 new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
             }
         }
+    }
+    public ResponseEntity<UserDTO> findUserDTOByToken(HttpServletRequest request) throws IOException {
+        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        final String token;
+        final String userEmail;
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            throw new IllegalStateException("No active user with this token");
+        }
+        token = authHeader.substring(7);
+
+        userEmail = jwtService.extractUsername(token);
+        if (userEmail != null) {
+            var user = this.repository.findByEmail(userEmail)
+                    .orElseThrow();
+            if (jwtService.isTokenValid(token, user)) {
+                return ResponseEntity.ok(convertToDTO(user));
+            }else{
+                throw new IllegalStateException("Token for this user is no longer valid.");
+            }
+        }
+        return null;
+    }
+    public UserDTO convertToDTO(User user) {
+        return new UserDTO(
+                user.getFirstname(),
+                user.getLastname(),
+                user.getEmail(),
+                user.getRole()
+        );
     }
 }
