@@ -66,11 +66,12 @@
                   <div class="text-h3 font-weight-bold text-dark text-center mb-6">
                     REJESTRACJA
                   </div>
-                  <v-text-field v-model="registerUser.email" class="text-black mx-12" label="Email" outlined dense single-line :rules="emailRules"></v-text-field>
-                  <v-text-field v-model="registerUser.password" class="text-black mx-12" label="Hasło" type="password" outlined dense
-                    single-line :rules="passwordRule"></v-text-field>
-                  <v-text-field v-model="registerUser.confirmPassword" class="text-black mx-12" label="Powtórz hasło" type="password" outlined dense
-                    single-line :rules="passwordMatchRule"></v-text-field>
+                  <v-text-field v-model="registerUser.email" class="text-black mx-12" label="Email" outlined dense
+                    single-line :rules="emailRules"></v-text-field>
+                  <v-text-field v-model="registerUser.password" class="text-black mx-12" label="Hasło" type="password"
+                    outlined dense single-line :rules="passwordRule"></v-text-field>
+                  <v-text-field v-model="registerUser.confirmPassword" class="text-black mx-12" label="Powtórz hasło"
+                    type="password" outlined dense single-line :rules="passwordMatchRule"></v-text-field>
                   <div class="text-center">
                     <v-btn type="submit" color="dark" :disabled="!registerValid">Zarejestruj się</v-btn>
                     <div class="text-h6 font-weight-bold text-dark text-center mt-2">
@@ -93,6 +94,9 @@
 import { ref, reactive } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import { useSnack } from '@/composables/useSnack';
+
+const { snackbarSuccess, snackbarError } = useSnack();
 const store = useStore();
 const router = useRouter();
 
@@ -124,25 +128,37 @@ const passwordMatchRule = [
 ];
 
 const handleLogin = async () => {
-  try {
-    await store.dispatch('loginUser', loginUser);
-    if (store.state.user)
-      router.push('/');
-  } catch (error) {
-    console.error('Login error:', error);
-  }
-};
-async function handleRegister() {
-    if (registerValid.value) {
-      const userFormatted = {
-        email: registerUser.email,
-        password: registerUser.password
-      };
-      await store.dispatch('registerUser', userFormatted);
-      if(store.state.user)
+  await store.dispatch('loginUser', loginUser)
+    .then(() => {
+      snackbarSuccess('Zalogowano pomyślnie.')
+    })
+    .catch(() => {
+      snackbarError('Nie udało się zalogować. Sprawdź dane i spróbuj ponownie.')
+    })
+    .finally(() => {
+      if (store.state.user)
         router.push('/');
-    }
+    });
+};
+const handleRegister = async () => {
+  if (registerValid.value) {
+    const userFormatted = {
+      email: registerUser.email,
+      password: registerUser.password
+    };
+    await store.dispatch('registerUser', userFormatted)
+      .then(() => {
+        snackbarSuccess('Rejestracja zakończona pomyślnie!')
+      })
+      .catch(() => {
+        snackbarError('Rejestracja nie powiodła się. Być może istnieje użytkownik o podanym adresie email.')
+      })
+      .finally(() => {
+        if (store.state.user)
+          router.push('/');
+      });
   }
+}
 </script>
 
 <style scoped>

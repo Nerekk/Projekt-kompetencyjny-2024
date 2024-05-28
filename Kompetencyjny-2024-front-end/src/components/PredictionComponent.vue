@@ -30,8 +30,8 @@
                     </v-row>
                     <v-row>
                         <v-col cols="6" class="pt-8 py-3">
-                            <v-text-field label="Długość geograficzna"></v-text-field>
-                            <v-text-field label="Szerokość geograficzna"></v-text-field>
+                            <v-text-field v-model="clickedPosition.lat" label="Długość geograficzna"></v-text-field>
+                            <v-text-field v-model="clickedPosition.lng" label="Szerokość geograficzna"></v-text-field>
                             <v-text-field label="Metry kwadratowe"></v-text-field>
                         </v-col>
                         <v-col cols="6" class=" pr-6">
@@ -64,39 +64,55 @@
                 </v-col>
             </v-row>
         </div>
-        <div class="mt-8 analysis-line text-center"><v-btn class="mt-n6">Rozpocznij analizę</v-btn></div>
+        <div class="mt-8 analysis-line text-center"><v-btn class="mt-n6" @click="store.dispatch('showOverlay')">Rozpocznij analizę</v-btn></div>
     </v-container>
 </template>
 
-<script>
-import { ref, onMounted } from 'vue';
+<script setup>
+import { ref, onMounted, watch } from 'vue';
+import { useStore } from 'vuex';
 import L from 'leaflet';
-export default {
-    name: "PredictionComponent",
-    setup() {
-        const map = ref();
-        const mapContainer = ref();
-        onMounted(() => {
-            map.value = L.map(mapContainer.value).setView([52.2297, 21.0122], 10);
-            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19,
-                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-            }).addTo(map.value);
-        });
-        const items = ref([
-            { title: 'Łódź' },
-            { title: 'Warszawa' },
-            { title: 'Gdańsk' },
-            { title: 'Poznań' },
-        ]);
-        const selected = ref("Miasto");
-        return {
-            items,
-            selected,
-            mapContainer
-        };
-    },
-};
+
+const store = useStore();
+const map = ref();
+const mapContainer = ref();
+onMounted(() => {
+    map.value = L.map(mapContainer.value).setView([52.2297, 21.0122], 10);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map.value);
+
+    map.value.on('click', (e) => {
+        clickedPosition.value.lat = e.latlng.lat;
+        clickedPosition.value.lng = e.latlng.lng;
+        console.log('Clicked position:', clickedPosition.value);
+
+        if (currentMarker.value) {
+            map.value.removeLayer(currentMarker.value);
+        }
+
+        currentMarker.value= L.marker([clickedPosition.value.lat, clickedPosition.value.lng]).addTo(map.value);
+    });
+});
+
+const clickedPosition = ref({ lat: null, lng: null });
+const currentMarker = ref(null);
+const items = ref([
+    { title: 'Łódź', coords: [51.7592, 19.4560] },
+    { title: 'Warszawa', coords: [52.2297, 21.0122] },
+    { title: 'Gdańsk', coords: [54.3520, 18.6466] },
+    { title: 'Poznań', coords: [52.4064, 16.9252] },
+]);
+const selected = ref("Miasto");
+
+
+watch(selected, (newVal) => {
+    const city = items.value.find(item => item.title === newVal);
+    if (city) {
+        map.value.setView(city.coords, 12);
+    }
+});
 </script>
 
 <style scoped>

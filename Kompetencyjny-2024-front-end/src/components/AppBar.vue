@@ -27,11 +27,20 @@
 import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
+import { useSnack } from '@/composables/useSnack';
+
+const { snackbarSuccess, snackbarError } = useSnack();
 const store = useStore();
 const router = useRouter();
 const user = computed(() => store.state.user);
 const logout = () => {
-  store.dispatch('logoutUser');
+  store.dispatch('logoutUser')
+    .then(() => {
+      snackbarSuccess('Wylogowano pomyślnie.')
+    })
+    .catch(() => {
+      snackbarError('Wystąpił błąd podczas wylogowywania.')
+    });
   router.push('/')
 }
 const topButtons = ref([
@@ -64,6 +73,7 @@ const downButtons = ref([
 .v-toolbar-title {
   font-size: 24px;
 }
+
 .email {
   color: #ffffff !important;
 }
