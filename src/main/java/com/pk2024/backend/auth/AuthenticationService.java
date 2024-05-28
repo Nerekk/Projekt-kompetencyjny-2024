@@ -32,20 +32,12 @@ public class AuthenticationService {
 
     public AuthenticationResponse register(RegisterRequest request) throws Exception {
         var user = User.builder()
-                .firstname(request.getFirstname())
-                .lastname(request.getLastname())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
                 .build();
 
         User savedUser = repository.save(user);
-
-//        try {
-//            savedUser =
-//        } catch (Exception e) {
-//            throw new PSQLException(new ServerErrorMessage(e.getMessage()));
-//        }
 
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
