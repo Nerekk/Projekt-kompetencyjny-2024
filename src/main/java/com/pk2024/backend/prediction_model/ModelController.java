@@ -2,14 +2,12 @@ package com.pk2024.backend.prediction_model;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Valid;
 import jakarta.validation.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
@@ -20,51 +18,26 @@ import static com.pk2024.backend.settings.Settings.MODEL_MAPPING;
 @RequestMapping(path = MODEL_MAPPING)
 public class ModelController {
 
-    private final ModelRequestHandler modelRequestHandler;
+    private final ModelService modelService;
 
     @Autowired
-    public ModelController(ModelRequestHandler modelRequestHandler) {
-        this.modelRequestHandler = modelRequestHandler;
+    public ModelController(ModelService modelService) {
+        this.modelService = modelService;
     }
 
-    @GetMapping(path = "/{meters}/{longitude}/{latitude}/{city}")
-    public ResponseEntity<Integer> getPredictedValue(@PathVariable("meters") Double meters,
-                                                     @PathVariable("longitude") Double longitude,
-                                                     @PathVariable("latitude") Double latitude,
-                                                     @PathVariable("city") String city) {
-
-        ModelRequest modelRequest = new ModelRequest();
-        modelRequest.setCity(city);
-        modelRequest.setSquareMeters(meters);
-        modelRequest.setLatitude(latitude);
-        modelRequest.setLongitude(longitude);
-
-        validateModelRequest(modelRequest);
-
-        return modelRequestHandler.getPredictedValue(modelRequest, ModelType.SMALL);
+    @PostMapping(path = "/small/prediction")
+    public ResponseEntity<Integer> getPredictedValueSmall(@Valid @RequestBody ModelRequest modelRequest) {
+        return modelService.getPredictedValue(modelRequest, ModelType.SMALL);
     }
 
-    @GetMapping(path = "/{meters}/{longitude}/{latitude}/{city}/{centreDistance}/{floorCount}/{rooms}")
-    public ResponseEntity<Integer> getPredictedValue(@PathVariable("meters") Double meters,
-                                                     @PathVariable("longitude") Double longitude,
-                                                     @PathVariable("latitude") Double latitude,
-                                                     @PathVariable("city") String city,
-                                                     @PathVariable("centreDistance") Double centreDistance,
-                                                     @PathVariable("floorCount") Integer floorCount,
-                                                     @PathVariable("rooms") Integer rooms) {
+    @PostMapping(path = "/medium/prediction")
+    public ResponseEntity<Integer> getPredictedValueMedium(@Valid @RequestBody ModelRequest modelRequest) {
+        return modelService.getPredictedValue(modelRequest, ModelType.MEDIUM);
+    }
 
-        ModelRequest modelRequest = new ModelRequest();
-        modelRequest.setCity(city);
-        modelRequest.setSquareMeters(meters);
-        modelRequest.setLatitude(latitude);
-        modelRequest.setLongitude(longitude);
-        modelRequest.setCentreDistance(centreDistance);
-        modelRequest.setFloorCount(floorCount);
-        modelRequest.setRooms(rooms);
-
-        validateModelRequest(modelRequest);
-
-        return modelRequestHandler.getPredictedValue(modelRequest, ModelType.MEDIUM);
+    @PostMapping(path = "/big/prediction")
+    public ResponseEntity<Integer> getPredictedValueBig(@Valid @RequestBody ModelRequest modelRequest) {
+        return modelService.getPredictedValue(modelRequest, ModelType.BIG);
     }
 
 

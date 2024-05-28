@@ -10,6 +10,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ModelRequest {
 
+    @NotNull(message = "User id cannot be null")
+    @Positive(message = "User id must be positive")
+    private Long userId;
+
     @NotBlank(message = "City cannot be null or blank")
     @ValidCity
     private String city;
@@ -71,4 +75,6 @@ public class ModelRequest {
     @NotNull(message = "POI count cannot be null")
     @Min(value = 0, message = "POI count must be zero or positive")
     private Integer poiCount = 0;
+
+
 }
