@@ -1,5 +1,6 @@
 package com.pk2024.backend.user;
 
+import com.pk2024.backend.prediction_model.ModelEntity;
 import com.pk2024.backend.token.Token;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -38,6 +39,9 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Token> tokens;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<ModelEntity> history;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
