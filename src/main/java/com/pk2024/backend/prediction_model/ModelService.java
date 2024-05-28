@@ -3,22 +3,33 @@ package com.pk2024.backend.prediction_model;
 import com.pk2024.backend.prediction_model.parameters.CityParameter;
 import com.pk2024.backend.prediction_model.parameters.DetailedParameter;
 import com.pk2024.backend.prediction_model.parameters.ModelParameters;
+import com.pk2024.backend.user.User;
+import com.pk2024.backend.user.UserRepository;
+import com.pk2024.backend.user.UserService;
 import lombok.NonNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Optional;
 
 import static com.pk2024.backend.settings.Settings.MODEL_FILENAMES_MAP;
 
 @Service
-public class ModelRequestHandler {
+public class ModelService {
     private final HashMap<ModelType, PredictionModel> predictionModelMap;
 
-    public ModelRequestHandler() {
+    private static ModelRepository modelRepository;
+    private static UserRepository userRepository;
+
+    @Autowired
+    public ModelService(ModelRepository modelRepository, UserRepository userRepository) {
         this.predictionModelMap = new HashMap<>();
+        ModelService.modelRepository = modelRepository;
+        ModelService.userRepository = userRepository;
         initializePredictionModels();
     }
 
@@ -49,11 +60,30 @@ public class ModelRequestHandler {
 
     public ResponseEntity<Integer> getPredictedValue(ModelRequest modelRequest, @NonNull ModelType modelType) {
         ModelParameters modelParameters = prepareParameters(modelRequest, modelType);
-
         PredictionModel predictionModel = getPredictionModel(modelType);
         Double predictedPrice = predictionModel.predict(modelParameters);
 
-        return new ResponseEntity<>((int) Math.ceil(predictedPrice), HttpStatus.OK);
+        int roundedPredict = (int) Math.ceil(predictedPrice);
+
+        savePredictionToHistory(modelRequest, modelType, roundedPredict);
+
+        return new ResponseEntity<>(roundedPredict, HttpStatus.OK);
+    }
+
+    private void savePredictionToHistory(ModelRequest modelRequest, ModelType modelType, int roundedPredict) {
+        User user = getUserById(modelRequest.getUserId().intValue());
+        if (user == null) return;
+
+        System.out.println(modelRequest);
+        ModelEntity entity = new ModelEntity(modelRequest, modelType, roundedPredict);
+        entity.setUser(user);
+        modelRepository.save(entity);
+    }
+
+
+    public User getUserById(Integer id) {
+        Optional<User> user = userRepository.findById(id);
+        return user.orElse(null);
     }
 
 
