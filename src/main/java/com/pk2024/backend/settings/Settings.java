@@ -31,6 +31,8 @@ public class Settings {
     public static final String MEDIUM_MODEL_FILENAME = "reg_rf_7f.pmml";
     public static final String BIG_MODEL_FILENAME = "reg_rf_14f.pmml";
 
+    public static final String MODEL_HISTORY_TABLE_NAME = "user_history";
+
     public static final HashMap<ModelType, String> MODEL_FILENAMES_MAP;
     static {
         MODEL_FILENAMES_MAP = new HashMap<>();

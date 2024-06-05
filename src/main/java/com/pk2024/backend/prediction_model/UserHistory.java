@@ -2,22 +2,22 @@ package com.pk2024.backend.prediction_model;
 
 import com.pk2024.backend.user.User;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
+import static com.pk2024.backend.settings.Settings.MODEL_HISTORY_TABLE_NAME;
+
 @Entity
-@Table(name = "model_history")
+@Table(name = MODEL_HISTORY_TABLE_NAME)
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class ModelEntity {
+public class UserHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -83,7 +83,7 @@ public class ModelEntity {
     @Column(nullable = false)
     private Integer poiCount;
 
-    public ModelEntity(ModelRequest modelRequest, ModelType modelType, Integer predictedValue) {
+    public UserHistory(ModelRequest modelRequest, ModelType modelType, Integer predictedValue) {
         this.modelType = modelType;
         this.predictedValue = predictedValue;
         this.predictionDate = new Date();

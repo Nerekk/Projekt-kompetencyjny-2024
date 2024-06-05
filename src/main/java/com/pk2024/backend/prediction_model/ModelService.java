@@ -5,7 +5,9 @@ import com.pk2024.backend.prediction_model.parameters.DetailedParameter;
 import com.pk2024.backend.prediction_model.parameters.ModelParameters;
 import com.pk2024.backend.user.User;
 import com.pk2024.backend.user.UserRepository;
-import com.pk2024.backend.user.UserService;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validation;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Optional;
+import java.util.Set;
 
 import static com.pk2024.backend.settings.Settings.MODEL_FILENAMES_MAP;
 
@@ -22,14 +25,17 @@ import static com.pk2024.backend.settings.Settings.MODEL_FILENAMES_MAP;
 public class ModelService {
     private final HashMap<ModelType, PredictionModel> predictionModelMap;
 
-    private static ModelRepository modelRepository;
+    private static UserHistoryRepository userHistoryRepository;
     private static UserRepository userRepository;
 
+
     @Autowired
-    public ModelService(ModelRepository modelRepository, UserRepository userRepository) {
+    public ModelService(UserHistoryRepository userHistoryRepository, UserRepository userRepository) {
         this.predictionModelMap = new HashMap<>();
-        ModelService.modelRepository = modelRepository;
+
+        ModelService.userHistoryRepository = userHistoryRepository;
         ModelService.userRepository = userRepository;
+
         initializePredictionModels();
     }
 
@@ -58,26 +64,38 @@ public class ModelService {
     }
 
 
-    public ResponseEntity<Integer> getPredictedValue(ModelRequest modelRequest, @NonNull ModelType modelType) {
+    public Integer getPredictedValue(ModelRequest modelRequest, @NonNull ModelType modelType) {
         ModelParameters modelParameters = prepareParameters(modelRequest, modelType);
         PredictionModel predictionModel = getPredictionModel(modelType);
         Double predictedPrice = predictionModel.predict(modelParameters);
 
-        int roundedPredict = (int) Math.ceil(predictedPrice);
-
-        savePredictionToHistory(modelRequest, modelType, roundedPredict);
-
-        return new ResponseEntity<>(roundedPredict, HttpStatus.OK);
+        return (int) Math.ceil(predictedPrice);
     }
 
-    private void savePredictionToHistory(ModelRequest modelRequest, ModelType modelType, int roundedPredict) {
-        User user = getUserById(modelRequest.getUserId().intValue());
-        if (user == null) return;
 
-        System.out.println(modelRequest);
-        ModelEntity entity = new ModelEntity(modelRequest, modelType, roundedPredict);
-        entity.setUser(user);
-        modelRepository.save(entity);
+    public void savePredictionToHistory(ModelRequest modelRequest, ModelType modelType, int price) {
+        User user = getUserById(modelRequest.getUserId().intValue());
+
+        if (user == null)
+            return;
+
+        UserHistory userHistory = new UserHistory(modelRequest, modelType, price);
+        userHistory.setUser(user);
+
+        userHistoryRepository.save(userHistory);
+    }
+
+
+    public ResponseEntity<Integer> predictAndSaveToHistory(ModelRequest modelRequest, ModelType modelType) {
+        try {
+            int predictedValue = getPredictedValue(modelRequest, modelType);
+            savePredictionToHistory(modelRequest, modelType, predictedValue);
+
+            return new ResponseEntity<>(predictedValue, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 
@@ -135,4 +153,12 @@ public class ModelService {
         return modelParameters;
     }
 
+
+    private void validateModelRequest(ModelRequest modelRequest) {
+        Set<ConstraintViolation<ModelRequest>> violations =
+                Validation.buildDefaultValidatorFactory().getValidator().validate(modelRequest);
+
+        if (!violations.isEmpty())
+            throw new ConstraintViolationException(violations);
+    }
 }
