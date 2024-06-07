@@ -1,7 +1,11 @@
 FROM openjdk:19-jdk-alpine
+WORKDIR /app
 
-ARG JAR_FILE=target/*.jar
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+RUN sed -i 's/\r$//' mvnw && chmod +x mvnw
 
-COPY ${JAR_FILE} backend/app.jar
+RUN ./mvnw dependency:go-offline
 
-ENTRYPOINT ["java", "-jar", "backend/app.jar"]
+CMD ["./mvnw", "spring-boot:run"]
+
