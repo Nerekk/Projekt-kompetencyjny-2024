@@ -41,6 +41,4 @@ public class Settings {
         MODEL_FILENAMES_MAP.put(ModelType.BIG, BIG_MODEL_FILENAME);
     }
 
-    public static final Integer PASSWORD_MIN_SIZE = 6;
-
 }

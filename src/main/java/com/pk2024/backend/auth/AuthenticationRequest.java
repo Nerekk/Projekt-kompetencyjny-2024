@@ -18,6 +18,6 @@ public class AuthenticationRequest {
   private String email;
 
   @NotBlank(message = "Password cannot be null or blank")
-  @Size(min = Settings.PASSWORD_MIN_SIZE, message = "Given password is too short")
+  @Size(min = 6, message = "Password must be at least size of 6")
   private String password;
 }
