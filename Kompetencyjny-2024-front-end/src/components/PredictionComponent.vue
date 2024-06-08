@@ -25,7 +25,7 @@
 
                         </v-col>
                         <v-col cols="6" class="py-3">
-                            <v-select v-model="selected" :items="items" class="mx-12 my-12"></v-select>
+                            <v-select v-model="selected" :items="cities" class="mx-12 my-12"></v-select>
                         </v-col>
                     </v-row>
                     <v-row>
@@ -64,16 +64,16 @@
                 </v-col>
             </v-row>
         </div>
-        <div class="mt-8 analysis-line text-center"><v-btn class="mt-n6" @click="store.dispatch('showOverlay')">Rozpocznij analizę</v-btn></div>
+        <div class="mt-8 analysis-line text-center"><v-btn class="mt-n6" @click="authStore.showOverlay()">Rozpocznij analizę</v-btn></div>
     </v-container>
 </template>
 
 <script setup>
 import { ref, onMounted, watch } from 'vue';
-import { useStore } from 'vuex';
+import { useAuthStore } from '@/store/AuthStore';
 import L from 'leaflet';
 
-const store = useStore();
+const authStore = useAuthStore();
 const map = ref();
 const mapContainer = ref();
 onMounted(() => {
@@ -98,17 +98,30 @@ onMounted(() => {
 
 const clickedPosition = ref({ lat: null, lng: null });
 const currentMarker = ref(null);
-const items = ref([
-    { title: 'Łódź', coords: [51.7592, 19.4560] },
-    { title: 'Warszawa', coords: [52.2297, 21.0122] },
+const cities = ref([
+    { title: 'Białystok', coords: [53.1325, 23.1688] },
+    { title: 'Bydgoszcz', coords: [53.1235, 18.0084] },
+    { title: 'Częstochowa', coords: [50.8118, 19.1203] },
     { title: 'Gdańsk', coords: [54.3520, 18.6466] },
+    { title: 'Gdynia', coords: [54.5189, 18.5305] },
+    { title: 'Katowice', coords: [50.2649, 19.0238] },
+    { title: 'Kraków', coords: [50.0647, 19.9450] },
+    { title: 'Lublin', coords: [51.2465, 22.5684] },
+    { title: 'Łódź', coords: [51.7592, 19.4560] },
     { title: 'Poznań', coords: [52.4064, 16.9252] },
+    { title: 'Radom', coords: [51.4027, 21.1471] },
+    { title: 'Rzeszów', coords: [50.0413, 21.9990] },
+    { title: 'Szczecin', coords: [53.4285, 14.5528] },
+    { title: 'Warszawa', coords: [52.2297, 21.0122] },
+    { title: 'Wrocław', coords: [51.1079, 17.0385] }
 ]);
+
+
 const selected = ref("Miasto");
 
 
 watch(selected, (newVal) => {
-    const city = items.value.find(item => item.title === newVal);
+    const city = cities.value.find(item => item.title === newVal);
     if (city) {
         map.value.setView(city.coords, 12);
     }

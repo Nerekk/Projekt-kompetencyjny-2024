@@ -10,14 +10,14 @@
 <script setup>
 import AppBar from "@/components/AppBar.vue";
 import { onMounted } from 'vue';
-import { useStore } from "vuex";
+import { useAuthStore } from "./store/AuthStore";
 import { Vue3Snackbar } from "vue3-snackbar";
 import { useSnack } from '@/composables/useSnack';
-const store = useStore();
+const authStore = useAuthStore();
 const { snackbarSuccess, snackbarError } = useSnack();
 onMounted(async () => {
   if(localStorage.getItem('token') !== null) {
-    await store.dispatch('getUserByToken')
+    await authStore.getUserByToken()
     .then(() => {
       snackbarSuccess('Zalogowano pomyślnie.')
     }).catch(() => {

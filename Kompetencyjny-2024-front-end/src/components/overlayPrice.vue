@@ -1,5 +1,5 @@
 <template>
-    <v-overlay class="centered-overlay" v-model="store.state.overlay" :persistent="canClose" :opacity="0.99">
+    <v-overlay class="centered-overlay" v-model="authStore.overlay" :persistent="canClose" :opacity="0.99">
         <div v-if="loading">
             <div class="text-gold text-h1">Obliczamy cenę...
                 <v-progress-circular indeterminate :size="150" :width="10" color="gold" />
@@ -16,7 +16,7 @@
                     </v-list>
                     <div class="text-h4 text-center">Cena wynosi: 1000 zł</div>
                     <div class="text-center mt-6">
-                        <v-btn @click="store.state.overlay = false">Zamknij</v-btn>
+                        <v-btn @click="authStore.overlay = false">Zamknij</v-btn>
                     </div>
                 </v-card-text>
             </v-card>
@@ -25,15 +25,16 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { useStore } from "vuex";
-const store = useStore();
+import { ref, watch } from "vue";
+import { useAuthStore } from "@/store/AuthStore";
+
+const authStore = useAuthStore();
 
 const loading = ref(false);
 const canClose = ref(true);
 
-store.watch(() => store.state.overlay, () => {
-    if (store.state.overlay) {
+watch(() => authStore.overlay, (newVal) => {
+    if (newVal) {
         loading.value = true;
         canClose.value = true;
     }
@@ -43,6 +44,7 @@ store.watch(() => store.state.overlay, () => {
     }, 3000);
 });
 </script>
+
 
 <style scoped>
 .centered-overlay {

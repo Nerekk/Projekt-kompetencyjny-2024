@@ -92,12 +92,12 @@
 
 <script setup>
 import { ref, reactive } from "vue";
-import { useStore } from "vuex";
+import { useAuthStore } from "@/store/AuthStore";
 import { useRouter } from "vue-router";
 import { useSnack } from '@/composables/useSnack';
 
 const { snackbarSuccess, snackbarError } = useSnack();
-const store = useStore();
+const authStore = useAuthStore();
 const router = useRouter();
 
 const registerForm = ref(false);
@@ -128,7 +128,7 @@ const passwordMatchRule = [
 ];
 
 const handleLogin = async () => {
-  await store.dispatch('loginUser', loginUser)
+  await authStore.loginUser(loginUser)
     .then(() => {
       snackbarSuccess('Zalogowano pomyślnie.')
     })
@@ -136,7 +136,7 @@ const handleLogin = async () => {
       snackbarError('Nie udało się zalogować. Sprawdź dane i spróbuj ponownie.')
     })
     .finally(() => {
-      if (store.state.user)
+      if (authStore.user)
         router.push('/');
     });
 };
@@ -146,7 +146,7 @@ const handleRegister = async () => {
       email: registerUser.email,
       password: registerUser.password
     };
-    await store.dispatch('registerUser', userFormatted)
+    await authStore.registerUser(userFormatted)
       .then(() => {
         snackbarSuccess('Rejestracja zakończona pomyślnie!')
       })
@@ -154,7 +154,7 @@ const handleRegister = async () => {
         snackbarError('Rejestracja nie powiodła się. Być może istnieje użytkownik o podanym adresie email.')
       })
       .finally(() => {
-        if (store.state.user)
+        if (authStore.user)
           router.push('/');
       });
   }

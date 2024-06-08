@@ -26,15 +26,15 @@
 <script setup>
 import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
-import { useStore } from "vuex";
+import { useAuthStore } from "@/store/AuthStore";
 import { useSnack } from '@/composables/useSnack';
 
 const { snackbarSuccess, snackbarError } = useSnack();
-const store = useStore();
+const authStore = useAuthStore();
 const router = useRouter();
-const user = computed(() => store.state.user);
-const logout = () => {
-  store.dispatch('logoutUser')
+const user = computed(() => authStore.user);
+const logout = async () => {
+  await authStore.logoutUser()
     .then(() => {
       snackbarSuccess('Wylogowano pomyślnie.')
     })
