@@ -32,6 +32,7 @@ public class SecurityConfiguration {
     private static final String[] WHITE_LIST_URL = {
             AUTH_MAPPING + "/**",
             MODEL_MAPPING + "/**",
+            STATISTICS_MAPPING + "/**",
             "/v2/api-docs",
             "/v3/api-docs",
             "/v3/api-docs/**",
