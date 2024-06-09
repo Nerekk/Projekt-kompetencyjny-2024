@@ -1,5 +1,7 @@
-package com.pk2024.backend.prediction_model;
+package com.pk2024.backend.user_history;
 
+import com.pk2024.backend.prediction_model.ModelRequest;
+import com.pk2024.backend.prediction_model.ModelType;
 import com.pk2024.backend.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 import static com.pk2024.backend.settings.Settings.MODEL_HISTORY_TABLE_NAME;
@@ -35,8 +39,7 @@ public class UserHistory {
     private Integer predictedValue;
 
     @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date predictionDate;
+    private LocalDateTime predictionDate;
 
     @Column(nullable = false)
     private String city;
@@ -86,7 +89,7 @@ public class UserHistory {
     public UserHistory(ModelRequest modelRequest, ModelType modelType, Integer predictedValue) {
         this.modelType = modelType;
         this.predictedValue = predictedValue;
-        this.predictionDate = new Date();
+        this.predictionDate = LocalDateTime.now(ZoneId.of("UTC+2"));
         this.city = modelRequest.getCity();
         this.squareMeters = modelRequest.getSquareMeters();
         this.longitude = modelRequest.getLongitude();

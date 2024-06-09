@@ -6,6 +6,8 @@ import com.pk2024.backend.prediction_model.parameters.DetailedParameter;
 import com.pk2024.backend.prediction_model.parameters.ModelParameters;
 import com.pk2024.backend.user.User;
 import com.pk2024.backend.user.UserRepository;
+import com.pk2024.backend.user_history.UserHistory;
+import com.pk2024.backend.user_history.UserHistoryRepository;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validation;
