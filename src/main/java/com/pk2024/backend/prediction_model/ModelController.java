@@ -2,12 +2,10 @@ package com.pk2024.backend.prediction_model;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.pk2024.backend.settings.Settings.MODEL_MAPPING;
 
@@ -26,20 +24,27 @@ public class ModelController {
 
 
     @PostMapping(path = "/small/prediction")
-    public ResponseEntity<Integer> getPredictedValueSmall(@Valid @RequestBody ModelRequest modelRequest) {
-        return modelService.predictAndSaveToHistory(modelRequest, ModelType.SMALL);
+    public ResponseEntity<Integer> getPredictedValueSmall(
+            @Valid @RequestBody ModelRequest modelRequest,
+            @RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String token) {
+
+        return modelService.predictAndSaveToHistory(modelRequest, ModelType.SMALL, token);
     }
 
 
     @PostMapping(path = "/medium/prediction")
-    public ResponseEntity<Integer> getPredictedValueMedium(@Valid @RequestBody ModelRequest modelRequest) {
-        return modelService.predictAndSaveToHistory(modelRequest, ModelType.MEDIUM);
+    public ResponseEntity<Integer> getPredictedValueMedium(
+            @Valid @RequestBody ModelRequest modelRequest,
+            @RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String token) {
+        return modelService.predictAndSaveToHistory(modelRequest, ModelType.MEDIUM, token);
     }
 
 
     @PostMapping(path = "/big/prediction")
-    public ResponseEntity<Integer> getPredictedValueBig(@Valid @RequestBody ModelRequest modelRequest) {
-        return modelService.predictAndSaveToHistory(modelRequest, ModelType.BIG);
+    public ResponseEntity<Integer> getPredictedValueBig(
+            @Valid @RequestBody ModelRequest modelRequest,
+            @RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String token) {
+        return modelService.predictAndSaveToHistory(modelRequest, ModelType.BIG, token);
     }
 
 }

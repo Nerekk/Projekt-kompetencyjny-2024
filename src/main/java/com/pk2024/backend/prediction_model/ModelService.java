@@ -1,5 +1,6 @@
 package com.pk2024.backend.prediction_model;
 
+import com.pk2024.backend.config.JwtService;
 import com.pk2024.backend.prediction_model.parameters.CityParameter;
 import com.pk2024.backend.prediction_model.parameters.DetailedParameter;
 import com.pk2024.backend.prediction_model.parameters.ModelParameters;
@@ -27,10 +28,12 @@ public class ModelService {
 
     private static UserHistoryRepository userHistoryRepository;
     private static UserRepository userRepository;
+    private final JwtService jwtService;
 
 
     @Autowired
-    public ModelService(UserHistoryRepository userHistoryRepository, UserRepository userRepository) {
+    public ModelService(UserHistoryRepository userHistoryRepository, UserRepository userRepository, JwtService jwtService) {
+        this.jwtService = jwtService;
         this.predictionModelMap = new HashMap<>();
 
         ModelService.userHistoryRepository = userHistoryRepository;
@@ -73,10 +76,10 @@ public class ModelService {
     }
 
 
-    public void savePredictionToHistory(ModelRequest modelRequest, ModelType modelType, int price) {
-        User user = getUserById(modelRequest.getUserId().intValue());
+    public void savePredictionToHistory(ModelRequest modelRequest, ModelType modelType, int price, String token) {
+        User user = getUserByToken(token);
 
-        if (user == null)
+        if (user == null || !jwtService.isTokenValid(token.substring(7), user))
             return;
 
         UserHistory userHistory = new UserHistory(modelRequest, modelType, price);
@@ -86,10 +89,11 @@ public class ModelService {
     }
 
 
-    public ResponseEntity<Integer> predictAndSaveToHistory(ModelRequest modelRequest, ModelType modelType) {
+    public ResponseEntity<Integer> predictAndSaveToHistory(ModelRequest modelRequest, ModelType modelType, String token) {
         try {
             int predictedValue = getPredictedValue(modelRequest, modelType);
-            savePredictionToHistory(modelRequest, modelType, predictedValue);
+            if(token != null && !token.trim().isEmpty())
+                savePredictionToHistory(modelRequest, modelType, predictedValue, token);
 
             return new ResponseEntity<>(predictedValue, HttpStatus.OK);
         } catch (Exception e) {
@@ -99,8 +103,13 @@ public class ModelService {
     }
 
 
-    public User getUserById(Integer id) {
-        Optional<User> user = userRepository.findById(id);
+    public User getUserByToken(String token) {
+        if (token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+        String userEmail = jwtService.extractUsername(token);
+
+        Optional<User> user = userRepository.findByEmail(userEmail);
         return user.orElse(null);
     }
 

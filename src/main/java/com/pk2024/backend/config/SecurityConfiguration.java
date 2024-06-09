@@ -20,8 +20,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.pk2024.backend.settings.Settings.AUTH_MAPPING;
-import static com.pk2024.backend.settings.Settings.LOGOUT_MAPPING;
+import static com.pk2024.backend.settings.Settings.*;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Configuration
@@ -32,6 +31,7 @@ public class SecurityConfiguration {
 
     private static final String[] WHITE_LIST_URL = {
             AUTH_MAPPING + "/**",
+            MODEL_MAPPING + "/**",
             "/v2/api-docs",
             "/v3/api-docs",
             "/v3/api-docs/**",
