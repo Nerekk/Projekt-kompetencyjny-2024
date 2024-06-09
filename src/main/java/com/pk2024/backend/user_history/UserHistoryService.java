@@ -8,9 +8,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +20,35 @@ public class UserHistoryService {
         return user.map(value -> repository.findByUserOrderByPredictionDateDesc(value, PageRequest.of(page, size))
                 .map(this::convertToResponse)).orElseGet(() -> new PageImpl<>(Collections.emptyList(), PageRequest.of(page, size), 0));
 
+    }
+    public Map<String, Map<String, Object>> getMostUsedParameters() {
+        long totalPredictions = repository.count();
+
+        List<Object[]> modelTypes = repository.findTopUsedModelTypes(PageRequest.of(0, 1));
+        List<Object[]> cities = repository.findTopUsedCities(PageRequest.of(0, 1));
+        List<Object[]> squareMeters = repository.findTopUsedSquareMeters(PageRequest.of(0, 1));
+
+        return Map.of(
+                "modelType", processSingleResult(modelTypes, totalPredictions),
+                "city", processSingleResult(cities, totalPredictions),
+                "squareMeters", processSingleResult(squareMeters, totalPredictions)
+        );
+    }
+
+    private Map<String, Object> processSingleResult(List<Object[]> results, long totalPredictions) {
+        if (results.isEmpty()) {
+            return new HashMap<>();
+        }
+
+        Object[] result = results.get(0);
+        String parameter = result[0].toString();
+        long occurrences = (long) result[1];
+        double percentage = (double) occurrences / totalPredictions * 100;
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("parameter", parameter);
+        map.put("occurrences", percentage);
+        return map;
     }
     private UserHistoryResponse convertToResponse(UserHistory history) {
         return UserHistoryResponse.builder()

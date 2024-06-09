@@ -15,6 +15,7 @@ public class Settings {
     public static final String LOGOUT_MAPPING = AUTH_MAPPING + "/logout";
     public static final String MODEL_MAPPING = BASE_MAPPING + "model";
     public static final String USER_HISTORY_MAPPING = BASE_MAPPING + "history";
+    public static final String STATISTICS_MAPPING = BASE_MAPPING + "statistics";
 
 
     /* TABLES */
