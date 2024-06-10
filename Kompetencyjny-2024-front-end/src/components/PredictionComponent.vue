@@ -20,24 +20,24 @@
       </v-row>
       <div class="text-h4 text-center py-5">Najczęściej wybierane parametry</div>
       <div class="d-flex justify-space-between text-center">
-        <v-row>
+        <v-row v-if="historyStore.mostUsedParams">
           <v-col>
-            <v-progress-circular :model-value="60" :rotate="320" :size="85" :width="15" color="gold">
-              <template v-slot:default> 60 % </template>
+            <v-progress-circular :model-value="historyStore.mostUsedParams.modelType.occurrences" :size="85" :width="15" color="gold">
+              <template v-slot:default> {{ historyStore.mostUsedParams.modelType.occurrences.toFixed(1) }}% </template>
             </v-progress-circular>
-            <div class="caption">Uproszczony</div>
+            <div class="caption">{{ historyStore.mostUsedParams.modelType.parameter }}</div>
           </v-col>
           <v-col>
-            <v-progress-circular :model-value="60" :rotate="360" :size="85" :width="15" color="gold">
-              <template v-slot:default> 60 % </template>
+            <v-progress-circular :model-value="historyStore.mostUsedParams.squareMeters.occurrences" :size="85" :width="15" color="gold">
+              <template v-slot:default> {{ historyStore.mostUsedParams.squareMeters.occurrences.toFixed(1) }} % </template>
             </v-progress-circular>
-            <div class="caption">60 m2</div>
+            <div class="caption">{{ historyStore.mostUsedParams.squareMeters.parameter }} m2</div>
           </v-col>
           <v-col>
-            <v-progress-circular :model-value="60" :rotate="180" :size="85" :width="15" color="gold">
-              <template v-slot:default> 60 % </template>
+            <v-progress-circular :model-value="historyStore.mostUsedParams.city.occurrences" :size="85" :width="15" color="gold">
+              <template v-slot:default> {{ historyStore.mostUsedParams.city.occurrences.toFixed(1) }} % </template>
             </v-progress-circular>
-            <div class="caption">Warszawa</div>
+            <div class="caption">{{ historyStore.mostUsedParams.city.parameter }}</div>
           </v-col>
         </v-row>
       </div>
@@ -48,8 +48,9 @@
   </template>
   
   <script setup>
-  import { ref, computed } from 'vue';
+  import { ref, computed, onMounted } from 'vue';
   // import { useAuthStore } from '@/store/AuthStore';
+  import { useHistoryStore } from '@/store/HistoryStore';
   import { usePredictionStore } from '@/store/PredictionStore';
   import { useSnack } from '@/composables/useSnack';
   import MinimalModel from './prediction-models/MinimalModel.vue';
@@ -57,10 +58,20 @@
   import AdvancedModel from './prediction-models/AdvancedModel.vue';
   // const authStore = useAuthStore();
   const predictionStore = usePredictionStore();
+  const historyStore = useHistoryStore();
   const { snackbarError } = useSnack();
 
   const selectedModel = ref('minimal')
-  
+  onMounted(async () => {
+    await historyStore.fetchStatistics();
+    if(historyStore.mostUsedParams.modelType.parameter === 'SMALL'){
+      historyStore.mostUsedParams.modelType.parameter = 'Minimalny'
+    }else if(historyStore.mostUsedParams.modelType.parameter === 'MEDIUM'){
+      historyStore.mostUsedParams.modelType.parameter = 'Uproszczony'
+    }else if(historyStore.mostUsedParams.modelType.parameter === 'BIG'){
+      historyStore.mostUsedParams.modelType.parameter = 'Zaawansowany'
+    }
+  });
   const selectedComponent = computed(() => {
     switch (selectedModel.value) {
       case 'simplified':

@@ -24,7 +24,6 @@ export const usePredictionStore = defineStore('predictionStore', {
         async smallModelPredict() {
             this.parameters.city = removeDiacritics(this.selectedCity);
             const smallParameters = {
-                userId: 21, //TODO: delete it after backend fix
                 city: this.parameters.city,
                 squareMeters: this.parameters.squareMeters,
                 longitude: this.parameters.longitude,
@@ -44,7 +43,6 @@ export const usePredictionStore = defineStore('predictionStore', {
         async mediumModelPredict() {
             this.parameters.city = removeDiacritics(this.selectedCity);
             const mediumParameters = {
-                userId: 21, //TODO: delete it after backend fix
                 city: this.parameters.city,
                 squareMeters: this.parameters.squareMeters,
                 longitude: this.parameters.longitude,
@@ -67,9 +65,7 @@ export const usePredictionStore = defineStore('predictionStore', {
         async bigModelPredict() {
             this.parameters.city = removeDiacritics(this.selectedCity);
         
-            // Start with the basic parameters
             const bigParameters = {
-                userId: 21, //TODO: delete it after backend fix
                 city: this.parameters.city,
                 longitude: this.parameters.longitude,
                 latitude: this.parameters.latitude,
@@ -119,7 +115,6 @@ function removeDiacritics(str) {
 // Funkcja pomocnicza do domyślnych parametrów
 function getDefaultParameters() {
     return {
-        userId: 21, //TODO: delete it after backend fix
         city: '',
         squareMeters: 0,
         longitude: null,

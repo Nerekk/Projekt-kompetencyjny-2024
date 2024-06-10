@@ -1,25 +1,28 @@
 import http from "../http-common";
-
+function getAuthHeaders() {
+    const token = localStorage.getItem('token');
+    if (token) {
+      return {
+        Authorization: 'Bearer ' + token
+      };
+    }
+    return {};
+  }
 class predictionService {
+    
     smallModelPredict(data) {
         return http.post(`/model/small/prediction`, data, {
-          headers:{
-              Authorization: 'Bearer ' + localStorage.getItem('token')
-            }
+          headers: getAuthHeaders()
         });
     }
     mediumModelPredict(data) {
         return http.post(`/model/medium/prediction`, data, {
-          headers:{
-              Authorization: 'Bearer ' + localStorage.getItem('token')
-            }
+          headers: getAuthHeaders()
         });
     }
     bigModelPredict(data) {
         return http.post(`/model/big/prediction`, data, {
-          headers:{
-              Authorization: 'Bearer ' + localStorage.getItem('token')
-            }
+          headers: getAuthHeaders()
         });
     }
 }

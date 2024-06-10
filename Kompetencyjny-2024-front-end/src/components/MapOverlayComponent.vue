@@ -24,7 +24,7 @@
   const currentMarker = ref(null);
   
   onMounted(() => {
-    map.value = L.map(mapContainer.value).setView([props.latitude, props.longitude], 17);
+    map.value = L.map(mapContainer.value).setView([props.latitude, props.longitude], 10);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -35,7 +35,7 @@
   
   watch(() => [props.latitude, props.longitude], ([newLat, newLng]) => {
     if (map.value) {
-      map.value.setView([newLat, newLng], 17);
+      map.value.setView([newLat, newLng], 10);
       if (currentMarker.value) {
         map.value.removeLayer(currentMarker.value);
       }

@@ -24,7 +24,7 @@
         <MapOverlayComponent :latitude="predictionStore.parameters.latitude || 0" 
         :longitude="predictionStore.parameters.longitude || 0"  />
       </div>
-      <div class="text-h4 text-center">Cena wynosi: {{ predictionStore.predictedPrice }} zł</div>
+      <div class="text-h4 text-center">Cena wynosi: {{ formattedPrice }} zł</div>
       <div class="text-center mt-6">
         <v-btn @click="predictionStore.resetParameters">Zamknij</v-btn>
       </div>
@@ -81,6 +81,12 @@ const filteredParameters = computed(() => {
       obj[key] = params[key];
       return obj;
     }, {});
+});
+const formattedPrice = computed(() => {
+  if (predictionStore.predictedPrice !== null && predictionStore.predictedPrice !== undefined) {
+    return predictionStore.predictedPrice.toLocaleString('pl-PL');
+  }
+  return '';
 });
 </script>
 

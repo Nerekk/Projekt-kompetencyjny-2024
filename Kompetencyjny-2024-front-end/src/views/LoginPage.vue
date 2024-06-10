@@ -1,4 +1,5 @@
 <template>
+    <v-main>
     <v-container fluid class="main-container d-flex flex-column bg-dark">
 
         <v-row no-gutters class="d-flex justify-space-between">
@@ -82,7 +83,7 @@
                             <v-text-field label="Powtórz hasło" v-model="registerUser.confirmPassword" :rules="passwordMatchRule" type="password" style="width: 80%;"></v-text-field>
                         </v-card-text>
                         <v-card-actions style="display: flex; flex-direction: column; align-items: center;">
-                            <v-btn class="bg-dark text-gold pa-7 d-flex align-center justify-center" style="border-radius: 30px; text-align:center; font-size: 18px" :disabled="!registerValid">
+                            <v-btn class="bg-dark text-gold pa-7 d-flex align-center justify-center" style="border-radius: 30px; text-align:center; font-size: 18px" :disabled="!registerValid" type="submit">
                                 Zarejestruj się
                             </v-btn>
                             <div class="text-h6 font-weight-bold text-dark text-center mt-2">
@@ -99,6 +100,7 @@
         </v-row>
         
     </v-container>
+</v-main>
 </template>
   
 <script setup>
@@ -182,7 +184,6 @@ const handleRegister = async () => {
     }
 
     .main-container{
-        margin-top: 109px;
         padding: 30px 30px 30px 30px;
     }
 
