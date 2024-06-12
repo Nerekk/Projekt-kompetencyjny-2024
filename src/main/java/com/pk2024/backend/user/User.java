@@ -1,6 +1,6 @@
 package com.pk2024.backend.user;
 
-import com.pk2024.backend.prediction_model.UserHistory;
+import com.pk2024.backend.user_history.UserHistory;
 import com.pk2024.backend.token.Token;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -10,10 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ModelRequest {
 
-    @NotNull(message = "User id cannot be null")
-    @Positive(message = "User id must be positive")
-    private Long userId;
-
     @NotBlank(message = "City cannot be null or blank")
     @ValidCity
     private String city;
