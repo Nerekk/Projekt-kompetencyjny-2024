@@ -2,7 +2,7 @@
   <v-main>
   <div class="bg" >
     <div class="text-h3 text-white text-center pt-2">Kupuj, planuj, inwestuj...</div>
-    <div class="text-h2 font-weight-bold text-white text-center pt-6">Nazwa Aplikacji</div>
+    <div class="text-h2 font-weight-bold text-white text-center pt-6">PrediHome</div>
 
   </div>
   <div class="prediction-section">
@@ -25,5 +25,17 @@ import overlayPrice from "@/components/overlayPrice.vue";
   background-position: top 100px center;
   background-repeat: no-repeat;
   background-size: cover;
+}
+
+@media (max-width: 600px) {
+  .text-h3{
+    font-size: 38px !important;
+    padding-top: 0px !important;
+  }
+
+  .text-h2{
+    font-size: 48px !important;
+    padding-top: 5px !important;
+  }
 }
 </style>

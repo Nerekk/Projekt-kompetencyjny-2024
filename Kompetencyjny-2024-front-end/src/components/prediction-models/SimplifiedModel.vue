@@ -1,7 +1,7 @@
 <template>
-  <v-card class="bg-lightGray mx-auto" height="80vh" width="100%">
-    <v-row>
-      <v-col cols="6" class="px-12 py-12">
+  <v-card class="bg-lightGray mx-auto pa-7" width="100%">
+    <v-row no-gutters>
+      <v-col cols="12" md="6" class="py-5 pr-md-3">
         <div class="text-h3 pb-2">Model uproszczony</div>
         <div class="caption text-white">
           Nasz uproszczony model wymaga podania większej ilości informacji,
@@ -9,12 +9,14 @@
           Dzięki dodatkowym danym, nasze prognozy będą jeszcze bardziej precyzyjne.
         </div>
       </v-col>
-      <v-col cols="6" class="py-3">
-        <v-select v-model="predictionStore.selectedCity" :items="cities" class="mx-12 my-12"></v-select>
+
+      <v-col cols="12" md="6" class="pl-md-3">
+        <v-select v-model="predictionStore.selectedCity" :items="cities" class="my-5"></v-select>
       </v-col>
     </v-row>
-    <v-row>
-      <v-col cols="6" class="pt-8 py-3 pl-6">
+
+    <v-row no-gutters>
+      <v-col cols="12" md="6" class="pr-md-3 order-md-1 order-2">
         <v-tooltip text="Te dane wypełnią się po wybraniu punktu na mapie" location="top">
           <template v-slot:activator="{ props }">
             <v-text-field v-bind="props" v-model="predictionStore.parameters.longitude" label="Długość geograficzna"
@@ -23,33 +25,39 @@
               readonly />
           </template>
         </v-tooltip>
+
         <v-row>
-          <v-col cols="9">
+          <v-col cols="12" md="9">
             <v-slider v-model="predictionStore.parameters.squareMeters" label="Metry kwadratowe" min="0" max="300"
               step="1" class="mt-4" />
           </v-col>
-          <v-col cols="3">
+          <v-col cols="12" md="3">
             <v-text-field v-model="predictionStore.parameters.squareMeters" hide-details type="number" suffix="m²" />
           </v-col>
         </v-row>
+
         <v-slider v-model="predictionStore.parameters.rooms" label="Ilość pokoi" min="1" max="6" step="1" class="mt-6"
           show-ticks thumb-label="always" />
         <v-slider v-model="predictionStore.parameters.floorCount" label="Ilość pięter" min="1" max="29" step="1"
           class="mt-6" show-ticks thumb-label="always" />
+
         <v-row>
-          <v-col cols="9">
+          <v-col cols="12" md="9">
             <v-slider v-model="predictionStore.parameters.centreDistance" label="Odl. od centrum" min="0.0" max="17.0"
               step="0.5" class="mt-4" />
           </v-col>
-          <v-col cols="3">
+          <v-col cols="12" md="3">
             <v-text-field v-model="predictionStore.parameters.centreDistance" hide-details type="number" suffix="km" />
           </v-col>
         </v-row>
       </v-col>
-      <v-col cols="6" class="pr-6">
+
+      <v-col cols="12" md="6" class="pl-md-3 order-md-2 order-1 map-column">
         <MapComponent :height="475" />
       </v-col>
+
     </v-row>
+
   </v-card>
 </template>
 
@@ -71,4 +79,18 @@ useValidation(validationRules);
 
 </script>
 
-<style scoped></style>
+<style scoped>
+@media (max-width: 600px) {
+  .text-h3{
+    font-size: 38px !important;
+  }
+
+  .caption{
+    font-size: 14px;
+  }
+  
+  .map-column{
+      padding-bottom: 20px !important;
+  }
+}
+</style>

@@ -1,6 +1,6 @@
 <template>
     <v-main>
-      <v-card class="flex-1-0 ma-16 pa-2" :elevation="24" rounded>
+      <v-card class="flex-1-0 ma-md-16 ma-5 pa-2" :elevation="24" rounded>
         <v-card-title>
           <div class="text-h3 text-center font-weight-bold">
             Szczegółowa historia predykcji
@@ -16,7 +16,7 @@
             </div>
           </div>
           <v-row>
-            <v-col cols="4">
+            <v-col cols="12" md="4">
               <v-expansion-panels
                 variant="accordion"
                 v-model="openedPanels"
@@ -75,7 +75,7 @@
                 </v-expansion-panel>
               </v-expansion-panels>
             </v-col>
-            <v-col cols="8">
+            <v-col cols="12" md="8">
               <div ref="mapContainer" style="width: auto; height: 500px;"></div>
             </v-col>
           </v-row>
@@ -213,14 +213,19 @@
   .ul {
   list-style-type: disc;
   padding-left: 1em;
-}
+  }
 
-.li {
-  margin-bottom: 0.5em;
-}
+    .li {
+      margin-bottom: 0.5em;
+    }
 
-.li span.placeholder {
-  color: rgba(0, 0, 0, 0.6);
-}
+  .li span.placeholder {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .text-h3{
+    word-wrap: break-word;
+    white-space: normal;
+  }
   </style>
   

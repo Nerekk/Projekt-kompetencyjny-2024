@@ -1,25 +1,28 @@
 <template>
-    <v-container class="pt-12" style="max-width: 75vw;">
-      <v-row align="center" justify="space-between">
-        <v-col cols="6">
-          <div class="text-h3 font-weight-bold">Predykcje</div>
+    <v-container class="pt-12 content">
+
+      <v-row class="prediction-row">
+        <v-col cols="12" md="6">
+          <div class="text-h3 font-weight-bold prediction-title">Predykcje</div>
           <div class="caption">Wybierz model dostosowany do swoich potrzeb</div>
         </v-col>
-        <v-col cols="6">
+        <v-col cols="12" md="6">
           <div class="d-flex justify-end">
             <v-btn-toggle v-model="selectedModel" mandatory>
-              <v-btn value="minimal" @click="predictionStore.selectedModel='minimal'">Minimalny</v-btn>
-              <v-btn value="simplified" @click="predictionStore.selectedModel='simplified'">Uproszczony</v-btn>
-              <v-btn value="advanced" @click="predictionStore.selectedModel='advanced'">Zaawansowany</v-btn>
+              <v-btn value="minimal" @click="predictionStore.selectedModel='minimal'" class="model-button">Minimalny</v-btn>
+              <v-btn value="simplified" @click="predictionStore.selectedModel='simplified'" class="model-button">Uproszczony</v-btn>
+              <v-btn value="advanced" @click="predictionStore.selectedModel='advanced'" class="model-button">Zaawansowany</v-btn>
             </v-btn-toggle>
           </div>
         </v-col>
-        <v-col>
+        <v-col cols="12" class="d-flex justify-end">
           <component :is="selectedComponent"></component>
         </v-col>
       </v-row>
+
       <div class="text-h4 text-center py-5">Najczęściej wybierane parametry</div>
       <div class="d-flex justify-space-between text-center">
+
         <v-row v-if="historyStore.mostUsedParams">
           <v-col>
             <v-progress-circular :model-value="historyStore.mostUsedParams.modelType.occurrences" :size="85" :width="15" color="gold">
@@ -40,8 +43,9 @@
             <div class="caption">{{ historyStore.mostUsedParams.city.parameter }}</div>
           </v-col>
         </v-row>
+        
       </div>
-      <div class="mt-8 analysis-line text-center">
+      <div class="mt-8 mb-8 analysis-line text-center">
         <v-btn class="mt-n6" @click="handlePrediction">Rozpocznij analizę</v-btn>
       </div>
     </v-container>
@@ -116,6 +120,33 @@ const validateInputs = () => {
   <style scoped>
   .v-container {
     height: 95vh;
+    max-width: 75vw;
+  }
+  
+  @media (max-width: 600px) {
+    .v-container {
+      max-width: 100vw;
+    }
+
+    .model-button{
+      font-size: 12px
+    }
+
+    .prediction-row{
+      display: flex ;
+      flex-direction: column ;
+      justify-content: center ;
+      align-items: center ;
+    }
+
+    .prediction-title{
+      text-align: center;
+    }
+
+    .caption {
+      text-align: center;
+    }
+
   }
   
   .caption {

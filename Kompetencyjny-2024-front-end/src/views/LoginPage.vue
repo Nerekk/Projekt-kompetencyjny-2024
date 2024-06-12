@@ -216,7 +216,7 @@ const handleRegister = async () => {
     }
 
     .card-title{
-        font-size: 40px; 
+        font-size: 35px; 
         font-weight:800; 
         line-height: 4rem;
     }
@@ -230,13 +230,13 @@ const handleRegister = async () => {
     }
 
     .big-card-element{
-        font-size: 80px;
+        font-size: 50px;
         font-weight: 800;
         line-height: 5rem;
     }
 
     .small-card-element{
-        font-size: 20px;
+        font-size: 18px;
     }
 
     .info-card::after{
@@ -282,6 +282,20 @@ const handleRegister = async () => {
 
     .login-btn{
         border-radius: 70%;
+    }
+    
+    @media (max-width: 1450px) {
+        .card-title{
+            font-size: 30px; 
+        }
+    
+        .big-card-element{
+            font-size: 40px;
+        }
+    
+        .small-card-element{
+            font-size: 15px;
+        }
     }
 
     @media (max-width: 600px) {
